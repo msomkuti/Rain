@@ -39,7 +39,7 @@ class Drop:
     def show(self):
         thick = map(self.z, 0, 20, 1, 3)  # Closer it is, thicker drop is
         strokeWeight(thick)  # Set thickness of drop
-        stroke(138, 43, 226)
+        stroke(37, 31, 74)
         line(self.x, self.y, self.x, self.y + self.len)  # Rain drop starts at a point (x,y) and ends at (x,y+10)
     
        

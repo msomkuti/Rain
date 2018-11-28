@@ -2,13 +2,16 @@
 # Source:  https://www.youtube.com/watch?v=KkyIDI6rQJI
 # Fading: https://forum.processing.org/two/discussion/13189/a-better-way-to-fade
 
+# CHANGE COLORS
+# EDIT WINDOW PANE COLOR
+
 import time 
 from Drop import Drop  # Import our class
 
 flash_count = 0
 
 def setup():
-    size(2000, 1500)  # Window size
+    size(1920, 1080)  # Window size
     
     # IMPLEMENTATION OF CANVAS IN PROGRESS
     canvas  = createGraphics(width, height)  # LEARN MORE
@@ -29,17 +32,21 @@ def setup():
     
     global old_time
     old_time = 0
+    
+    global foreground
+    foreground = loadImage("foreground.png")
+    foreground.resize(1920,1080)
         
     
 def draw():
     global thun_old, flash_count, flash, old_time
-    
-    background(230, 230, 250)  # Draw our background
+    background(15, 13, 31)  # Draw our background
     
     for i in range(len(drops)):  # Makes our drops start falling and draws them to the canvas
         drops[i].fall()
         drops[i].show()
     
+    image(foreground, 0,0)
     
     # WORK IN THE THUNDER!!!
     pos_thun = time.time()
@@ -73,17 +80,17 @@ def draw():
            # print('reset')
        
            
-# FUNCTION CREATION IN PROGRESS    
-def fadeGraphics(PGraphics c, int fadeAmount):
-    c.beginDraw()  # LEARN WHAT HAPPENS IN THIS FUNCTION
-    c.loadPixels()
+# # FUNCTION CREATION IN PROGRESS    
+# def fadeGraphics(PGraphics c, int fadeAmount):
+#     c.beginDraw()  # LEARN WHAT HAPPENS IN THIS FUNCTION
+#     c.loadPixels()
     
-    for i in range(0, c.pixels.length):  # GET ALPHA VALUE
-        alpha = (c.pixels[i] >> 24) & 0xFF  # WHAT THIS
+#     for i in range(0, c.pixels.length):  # GET ALPHA VALUE
+#         alpha = (c.pixels[i] >> 24) & 0xFF  # WHAT THIS
         
-        alpha = max(0, alpha - fadeAmount)
-        c.pixels[i] = (alpha << 24 or c.pixels[i]) & 0xFFFFFF 
+#         alpha = max(0, alpha - fadeAmount)
+#         c.pixels[i] = (alpha << 24 or c.pixels[i]) & 0xFFFFFF 
         
-    canvas.updatePixels()
-    canvas.endDraw()        
+#     canvas.updatePixels()
+#     canvas.endDraw()        
         
