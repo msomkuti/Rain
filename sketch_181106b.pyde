@@ -7,78 +7,86 @@
 
 import time 
 from Drop import Drop  # Import our class
+# from night_sky import drawGradient
 
-flash_count = 0
 
 def setup():
+    global bg_color, drops, flash, flash_count, foreground, old_time, start_time
+    
     size(1920, 1080)  # Window size
     
     # IMPLEMENTATION OF CANVAS IN PROGRESS
-    canvas  = createGraphics(width, height)  # LEARN MORE
+    # canvas  = createGraphics(width, height)  # LEARN MORE
     
-    global drops  
-    drops = [None] * 1000  # Preallocate the array of rain drops
+    drops = [None] * 1000  # Preallocate array of rain drops
     for i in range(len(drops)):
-        drops[i] = Drop()  # Create an array of drops
+        drops[i] = Drop()  # Create array of rain drops
     
-    global start_time
-    start_time = time.time()
-    
-    global thun_old  # Keep track of what second the thunder occurs
-    thun_old = 0
-    
-    global flash
-    flash = 0
-    
-    global old_time
-    old_time = 0
-    
-    global foreground
-    foreground = loadImage("foreground.png")
+    start_time = time.time()  # Acquire time, will control frequency of thunder clap
+    old_time = 0  # Track every time step for thunder animation
+
+    flash = 0  # Keep track on whether thunder animation is in progress
+    flash_count = 0  # Track num frames passed during animation
+
+    foreground = loadImage("foreground.png")  # Set foreground image
     foreground.resize(1920,1080)
-        
     
+    bg_color = color(17, 35, 41)  # Background color
+    
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # GRADIENT STUFF SETUP
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 def draw():
     global thun_old, flash_count, flash, old_time
-    background(15, 13, 31)  # Draw our background
+    background(bg_color)  # Draw our background
     
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # GRADIENT STUFF COMING SOON^TM
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Rain falling
     for i in range(len(drops)):  # Makes our drops start falling and draws them to the canvas
         drops[i].fall()
         drops[i].show()
-    
-    image(foreground, 0,0)
-    
-    # WORK IN THE THUNDER!!!
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Thunder flashes every x amount of seconds
     pos_thun = time.time()
     new_time = int(pos_thun - start_time)
-    #print(new_time)
-    #print('thun_old')
-    #print(thun_old)
     
     # RAINDROPS SLOW DOWN DURING THUNDER
-    if ( new_time % 11 == 0 and old_time != new_time):  # This thunders every 5 seconds # MAKE THIS FLASH CORRECTLY
-        flash = 1
-        old_time = new_time
+    
+    # Check how much time has passed
+    if ( new_time % 10 == 0 and old_time != new_time):  # This thunders every 5 seconds # MAKE THIS FLASH CORRECTLY
+        flash = 1  # Thunderclap has begun
+        old_time = new_time  # Increment our time step
 
-       
+    # If thunder has begun
     if (flash == 1):
-        flash_count += 1
-        #thun_old = 1
-        fade_out = 200 - (flash_count * 4) * 1.25  # Change opacity, MAKE THIS SMOOTHER
-        #if (flash_count == 8):  # MAKE DOUBLE FLASH BETTER
-        #    fade_out = 200
-        fill(255, 250, 205, fade_out)
+        flash_count += 1  # Count num frames drawn during thunder
+        fade_in = 25 + flash_count
+        fade_out = 65 - (flash_count * .95) #* 1.25  # Change opacity, MAKE THIS SMOOTHER
+    
+        if flash_count < 10:
+            fill(255, 250, 205, fade_in)
+        else:
+            fill(255, 250, 205, fade_out)
             #stroke(230, 230, 250)   
-        rect(0,0, 2000, 1500)
-        #print(fade_out)
-       # print(flash_count)
-            
-        if (fade_out < 0):
-            #thun_old = 0
+        
+        rect(0,0, width, height)
+                    
+        if (fade_out < 0 ):
             flash_count = 0
             flash = 0
-           # print('reset')
-       
+            fade_in = 0
+            fade_out = 0
+    
+    image(foreground, 0,0)
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
            
 # # FUNCTION CREATION IN PROGRESS    
 # def fadeGraphics(PGraphics c, int fadeAmount):
