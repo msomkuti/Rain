@@ -9,10 +9,8 @@ import time
 from Drop import Drop  # Import our class
 # from night_sky import drawGradient
 
-
 def setup():
     global bg_color, drops, flash, flash_count, foreground, old_time, start_time
-    
     size(1920, 1080)  # Window size
     
     # IMPLEMENTATION OF CANVAS IN PROGRESS
@@ -37,9 +35,14 @@ def setup():
     # GRADIENT STUFF SETUP
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    global num_frames
+    num_frames = int(60*20)
+
+
 def draw():
-    global thun_old, flash_count, flash, old_time
+    global thun_old, flash_count, flash, old_time, num_frames
     background(bg_color)  # Draw our background
+    
     
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # GRADIENT STUFF COMING SOON^TM
@@ -60,15 +63,15 @@ def draw():
     # RAINDROPS SLOW DOWN DURING THUNDER
     
     # Check how much time has passed
-    if ( new_time % 10 == 0 and old_time != new_time):  # This thunders every 5 seconds # MAKE THIS FLASH CORRECTLY
+    if ( new_time % 14 == 0 and old_time != new_time):  # This thunders every 5 seconds # MAKE THIS FLASH CORRECTLY
         flash = 1  # Thunderclap has begun
         old_time = new_time  # Increment our time step
-
+    #print(flash_count)
     # If thunder has begun
     if (flash == 1):
         flash_count += 1  # Count num frames drawn during thunder
-        fade_in = 25 + flash_count
-        fade_out = 65 - (flash_count * .95) #* 1.25  # Change opacity, MAKE THIS SMOOTHER
+        fade_in =  50 + flash_count  # Initial flash of lightning is always brighter than second
+        fade_out = 60 - int(flash_count * 1.12) # * 1.03) # Second flash of lightning leads to fade out  # Change opacity, MAKE THIS SMOOTHER
     
         if flash_count < 10:
             fill(255, 250, 205, fade_in)
@@ -85,6 +88,10 @@ def draw():
             fade_out = 0
     
     image(foreground, 0,0)
+     
+    #if frameCount <= num_frames:
+    #    saveFrame('image-%s.gif' %frameCount)
+    
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
            
