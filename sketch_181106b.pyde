@@ -71,7 +71,7 @@ def draw():
     if (flash == 1):
         flash_count += 1  # Count num frames drawn during thunder
         fade_in =  50 + flash_count  # Initial flash of lightning is always brighter than second
-        fade_out = 60 - int(flash_count * 1.12) # * 1.03) # Second flash of lightning leads to fade out  # Change opacity, MAKE THIS SMOOTHER
+        fade_out = 60 - int(flash_count * .91) # * 1.03) # Second flash of lightning leads to fade out  # Change opacity, MAKE THIS SMOOTHER
     
         if flash_count < 10:
             fill(255, 250, 205, fade_in)
